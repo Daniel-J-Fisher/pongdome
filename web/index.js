@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
+const path = require('path');
+
 
 app.get('/', (req, res) => {
-    res.send('index.html');
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.listen(80, ()=>console.log('Webserver listening on port 80'));
+app.listen(8080, ()=>console.log('Webserver listening on port 8080'));
