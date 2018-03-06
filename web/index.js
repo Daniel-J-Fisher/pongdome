@@ -5,10 +5,4 @@ app.get('/', (req, res) => {
     res.send('index.html');
 });
 
-exports.run = (config) => {
-    app.listen(80, ()=>console.log('Webserver listening on port 80'));
-}
-
-if (require.main === module) {
-    exports.run()
-}
+app.listen(80, ()=>console.log('Webserver listening on port 80'));
