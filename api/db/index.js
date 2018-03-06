@@ -10,7 +10,7 @@ function bind (db, to, from) {
 }
 
 module.exports = function makeDatabase (url) {
-  const db = pg()(url)
+  const db = pg({user:'pi',password:''})(url)
 
   return bind(db, {
     tx: f => db.tx(t => f(bind(t, {
