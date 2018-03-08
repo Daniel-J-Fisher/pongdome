@@ -25,8 +25,8 @@ function MattermostBot() {
     state.users = [];
 
     const onMessage = message => {
-        if(message.raw && message.raw.event && message.raw.event == 'posted'){
-            !message.subtype && emitter.emit('message', format.message(state, message.raw.data));
+        if(message.event && message.event == 'posted'){
+            !message.subtype && emitter.emit('message', format.message(state, message.data));
         }
     }
 
