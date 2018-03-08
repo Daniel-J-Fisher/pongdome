@@ -9,7 +9,7 @@ exports.user = user => ({
 
 exports.message = (state, message) => ({
     raw: message,
-    id: message.ts,
-    author: state.users[message.user] || state.users[message.bot_id],
-    text: state.removeFormatting(message.text)
+    id: message.id,
+    author: state.users[message.user_id] || state.users[message.bot_id],
+    text: message.message
 })

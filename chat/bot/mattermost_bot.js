@@ -22,6 +22,7 @@ function MattermostBot() {
     initConnections();
     const onError = err => emitter.emit('error', err);
     const state = {};
+    state.users = [];
 
     const onMessage = message =>
         !message.subtype && emitter.emit('message', format.message(state, message));
