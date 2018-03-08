@@ -23,6 +23,8 @@ exports.run = function chat (config) {
   const bot = makeBot(config)
   const api = io(config.API_URL)
 
+  debug('Bot listening and websocket connected');
+
   const admins = config.ADMINS ? config.ADMINS.split(',') : []
   const challenges = {}
   const matchesById = {}
@@ -154,7 +156,8 @@ exports.run = function chat (config) {
 
   bot.on('message', message => {
     let results = matchAll(/(?:^|[^\w])#(\w+)/g, message.text)
-
+    
+    debug(JSON.stringify(message));
     // Flowdock specific code: in a flow.
     if (message.raw.thread_id) {
       // Keep only tags that are actual Flowdock tags (will not match tags
