@@ -12,12 +12,12 @@ const actions = require('./actions')
 
 const MattermostBot = require('./bot/mattermost_bot');
 
-function makeBot (config) {
+function makeBot(config) {
   const adapter = new MattermostBot();
   return Stdbot(adapter)
 }
 
-exports.run = function chat (config) {
+exports.run = function chat(config) {
   config = makeConfig(defaults, config)
 
   const bot = makeBot(config)
@@ -30,7 +30,7 @@ exports.run = function chat (config) {
   const matchesById = {}
   const matchesByThread = {}
 
-  function saveState () {
+  function saveState() {
     const state = Object.keys(matchesById).map(key => matchesById[key])
     fs.writeFileSync(`${__dirname}/state.json`, JSON.stringify(state, null, 2))
   }
@@ -39,9 +39,9 @@ exports.run = function chat (config) {
     require('./state')
       .map(request => Object.assign({}, request, { message: bot.formatMessage(request.message) }))
       .forEach(addRequest)
-  } catch (e) {}
+  } catch (e) { }
 
-  function findRequestThread (message) {
+  function findRequestThread(message) {
     const request = matchesByThread[message.thread]
 
     if (!request) {
@@ -52,7 +52,7 @@ exports.run = function chat (config) {
     return request
   }
 
-  function findRequestUser (message) {
+  function findRequestUser(message) {
     const user = message.mentions()[0]
 
     const requests = Object.keys(matchesById)
@@ -64,8 +64,8 @@ exports.run = function chat (config) {
         if (!user) return isAuthor
 
         return isAuthor ||
-            request.challenger.id === user.id ||
-            (request.challengee && request.challengee.id === user.id)
+          request.challenger.id === user.id ||
+          (request.challengee && request.challengee.id === user.id)
       })
 
     if (!requests || !requests.length) {
@@ -88,12 +88,12 @@ exports.run = function chat (config) {
     return requests.pop()
   }
 
-  function findRequest (message) {
+  function findRequest(message) {
     if (message.thread) return findRequestThread(message)
     else return findRequestUser(message)
   }
 
-  function addRequest (request) {
+  function addRequest(request) {
     if (!request.id) request = Object.assign({ id: uuid.v4() }, request)
 
     if (matchesByThread[request.message.thread]) {
@@ -120,7 +120,7 @@ exports.run = function chat (config) {
     return request
   }
 
-  function removeRequest ({ id, challenger, challengee }) {
+  function removeRequest({ id, challenger, challengee }) {
     if (challenges[challenger.id]) {
       challenges[challenger.id] = challenges[challenger.id]
         .filter(request => request.id !== id)
@@ -139,7 +139,7 @@ exports.run = function chat (config) {
     saveState()
   }
 
-  function matchAll (regex, string) {
+  function matchAll(regex, string) {
     let match
     const results = []
     while ((match = regex.exec(string)) != null) results.push(match)
@@ -156,9 +156,13 @@ exports.run = function chat (config) {
 
   bot.on('message', message => {
     let results = matchAll(/(?:^|[^\w])#(\w+)/g, message.text)
-    
+
     debug(JSON.stringify(message));
     debug('RESULTS LENGTH: ' + results.length);
+
+    message.mentions = () => {
+      return bot.mentions(message);
+    }
 
     if (!results.length) return
 
