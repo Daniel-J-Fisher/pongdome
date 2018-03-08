@@ -48,7 +48,7 @@ function MattermostBot() {
             .then(()=>{
                 wsClient.setEventCallback(onMessage);
                 wsClient.setErrorCallback(onError);
-                wsClient.initialize(config_file.WEBSOCKET_URL,state.token);
+                wsClient.initialize(state.token,{},{},{'connectionUrl':config_file.WEBSOCKET_URL});
                 emitter.emit('load', state)
             })
             .catch((err)=>{
