@@ -26,7 +26,10 @@ function MattermostBot() {
 
     const onMessage = message => {
         if(message.event && message.event == 'posted'){
-            !message.subtype && emitter.emit('message', format.message(state, message.data));
+            let data_before_format = message.data.post;
+            let data_after_format = format.message(state, data_before_format);
+            console.log(Object.keys(data_after_format));
+            !message.subtype && emitter.emit('message', format.message(state, message.data.post));
         }
     }
 

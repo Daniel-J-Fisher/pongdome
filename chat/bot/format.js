@@ -10,6 +10,6 @@ exports.user = user => ({
 exports.message = (state, message) => ({
     raw: message,
     id: message.id,
-    author: state.users[message.user_id] || state.users[message.bot_id],
+    author: state.users[message.user_id],
     text: message.message
 })
