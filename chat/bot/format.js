@@ -3,7 +3,7 @@ exports.user = user => ({
     id: user.id,
     name: user.username,
     fullName: user.first_name + user.last_name,
-    email: user.profile.email,
+    email: user.email,
     image: ""
 })
 
