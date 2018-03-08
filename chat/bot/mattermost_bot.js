@@ -68,7 +68,7 @@ function MattermostBot() {
     emitter.address = (user, text) => `${emitter.mention(user)}: ${text}`
 
     emitter.mentions = message =>
-        (message.raw.text.match(/<@[^>]+>/g) || [])
+        (message.raw.message.match(/<@[^>]+>/g) || [])
             .map(tag => tag.slice(2, -1))
             .map(id => state.users[id]);
 
