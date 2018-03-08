@@ -164,6 +164,10 @@ exports.run = function chat(config) {
       return bot.mentions(message);
     }
 
+    message.send = (text) => {
+      return bot.send(message,text);
+    }
+
     if (!results.length) return
 
     const action = results[0][1].toLowerCase()
