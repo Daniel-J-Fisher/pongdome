@@ -6,7 +6,6 @@ const web = require('./web')
 
 api.run()
 web.run()
-//Disable chat for now
-//chat.run()
+chat.run()
 gpio.run()
 screen.run()
