@@ -2,7 +2,7 @@ const Table = require('cli-table2')
 const fs = require('fs')
 const numeral = require('numeral')
 const io = require('socket.io-client')
-const Stdbot = require('stdbot')
+const Stdbot = require('stdbot');
 const uuid = require('uuid')
 
 const makeConfig = require('../config')
@@ -10,20 +10,10 @@ const debug = require('../debug')('pongdome:chat')
 const defaults = require('./config')
 const actions = require('./actions')
 
-function getAdapterConfig (config) {
-  if (config.ADAPTER_CONFIG) return JSON.parse(config.ADAPTER_CONFIG)
-
-  if (config.ADAPTER === 'stdbot-flowdock') {
-    const adapterConfig = { token: config.FLOWDOCK_TOKEN }
-    if (config.FLOWDOCK_FLOWS) adapterConfig.flows = config.FLOWDOCK_FLOWS.split(',')
-    if (config.FLOWDOCK_USER === 'true') adapterConfig.streamConfig = { user: true }
-    return adapterConfig
-  }
-}
+const MattermostBot = require('./bot/mattermost_bot');
 
 function makeBot (config) {
-  const adapterConfig = getAdapterConfig(config)
-  const adapter = require(config.ADAPTER)(adapterConfig)
+  const adapter = new MattermostBot();
   return Stdbot(adapter)
 }
 

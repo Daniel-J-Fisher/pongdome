@@ -6,9 +6,14 @@
     "start": "node ."
   },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "cli-table2": "^0.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "mattermost-redux": "^1.2.0",
     "numeral": "^2.0.6",
+    "socket.io-client": "^2.0.4",
     "stdbot": "^0.4.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "ws": "^5.0.0"
   }
 }
