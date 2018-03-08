@@ -7,9 +7,12 @@ exports.user = user => ({
     image: ""
 })
 
-exports.message = (state, message) => ({
-    raw: message,
-    id: message.id,
-    author: state.users[message.user_id],
-    text: message.message
-})
+exports.message = (state, message) => {
+    message = JSON.parse(message);
+    return {
+        raw: message,
+        id: message.id,
+        author: state.users[message.user_id],
+        text: message.message
+    }
+}
