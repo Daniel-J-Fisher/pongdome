@@ -34,7 +34,6 @@ function MattermostBot() {
     }
 
     function initConnections(){
-        let web = new Client4;
         web.setUrl(config_file.HTTP_URL);
         web.login(config_file.BOT_ID, config_file.BOT_PASSWORD)
             .then((me) => {
@@ -76,10 +75,14 @@ function MattermostBot() {
         message.includes(`<@${user.id}>`) ||
         message.text.toLowerCase().split(/\s+/).includes(user.name.toLowerCase());
 
-    emitter.send = (message, text) =>
+    emitter.send = (message, text) => {
+        console.log("MESSAGE WITH CHANNEL OF: " + message.raw.channel);
+        console.log(JSON.stringify(message));
         web.createPost({'channel_id':message.raw.channel,'message':text})
             .then(res => (res.message.channel = res.channel_id, res.message))
-            .then(message => format.message(state, message));
+            .then(message => format.message(state, message))
+            .catch(err=>{console.err(err)});
+    }
 
     emitter.edit = (message, text) =>
         web.updatePost({'id':message.id,'message':text});
