@@ -1,5 +1,9 @@
 {
     "WEBSOCKET_URL": "",
     "HTTP_URL": "",
-    "BOT_TOKEN": ""
+    "BOT_TOKEN": "",
+    "BOT_ID":"",
+    "BOT_ID_FULL":"xbpf54pwjpncdp37799e1utcye",
+    "BOT_PASSWORD":"",
+    "TARGET_CHANNEL_ID":""
 }

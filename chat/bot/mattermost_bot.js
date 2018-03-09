@@ -25,7 +25,7 @@ function MattermostBot() {
     state.users = [];
 
     const onMessage = message => {
-        if(message.event && message.event == 'posted'){
+        if(message.event && message.event == 'posted' && message.data.post.user_id != config_file.BOT_ID_FULL){
             let data_before_format = message.data.post;
             let data_after_format = format.message(state, data_before_format);
             console.log(Object.keys(data_after_format));
@@ -67,7 +67,7 @@ function MattermostBot() {
     emitter.address = (user, text) => `${emitter.mention(user)}: ${text}`
 
     emitter.mentions = message =>
-        (message.raw.message.match(/<@[^>]+>/g) || [])
+        (message.raw.message.match(/@[^\s]+/g) || [])
             .map(tag => tag.slice(2, -1))
             .map(id => state.users[id]);
 
