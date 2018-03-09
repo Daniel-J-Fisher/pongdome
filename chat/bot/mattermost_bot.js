@@ -48,6 +48,7 @@ function MattermostBot() {
                     web.getProfiles(1,200).then(more_users=>{
                         let all_users = users.concat(more_users);
                         state.users = indexBy('id', all_users.map(format.user))
+                        state.users_by_username = indexBy('username',all_users.map(format.user))
                     });
                 });
             })
@@ -69,7 +70,7 @@ function MattermostBot() {
     emitter.mentions = message =>
         (message.raw.message.match(/@[^\s]+/g) || [])
             .map(tag => tag.slice(1))
-            .map(id => state.users[id]);
+            .map(id => state.users_by_username[id]);
 
     emitter.isMentionned = (user, message) =>
         message.includes(`<@${user.id}>`) ||
