@@ -75,14 +75,10 @@ function MattermostBot() {
         message.includes(`<@${user.id}>`) ||
         message.text.toLowerCase().split(/\s+/).includes(user.name.toLowerCase());
 
-    emitter.send = (message, text) => {
-        console.log("MESSAGE WITH CHANNEL OF: " + message.raw.channel_id);
-        console.log(JSON.stringify(message));
+    emitter.send = (message, text) =>
         web.createPost({'channel_id':message.raw.channel_id,'message':text})
             .then(res => (res.message.channel = res.channel_id, res.message))
             .then(message => format.message(state, message))
-            .catch(err=>{console.error(err)});
-    }
 
     emitter.edit = (message, text) =>
         web.updatePost({'id':message.id,'message':text});
