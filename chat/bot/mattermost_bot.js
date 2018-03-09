@@ -68,7 +68,7 @@ function MattermostBot() {
 
     emitter.mentions = message =>
         (message.raw.message.match(/@[^\s]+/g) || [])
-            .map(tag => tag.slice(2, -1))
+            .map(tag => tag.slice(1))
             .map(id => state.users[id]);
 
     emitter.isMentionned = (user, message) =>
