@@ -16,20 +16,21 @@ const format = require('./format');
 const indexBy = (prop, items) =>
   items.reduce((index, item) => (index[item[prop]] = item, index), {})
 
+var state = {};
+state.users = [];
+
 function MattermostBot() {
     const emitter = new EventEmitter();
     const web = new Client4;
     initConnections();
     const onError = err => emitter.emit('error', err);
-    this.state = {};
-    this.state.users = [];
 
     const onMessage = message => {
         if(message.event && message.event == 'posted' && message.data.post.user_id != config_file.BOT_ID_FULL){
             let data_before_format = message.data.post;
-            let data_after_format = format.message(this.state, data_before_format);
+            let data_after_format = format.message(state, data_before_format);
             console.log(Object.keys(data_after_format));
-            !message.subtype && emitter.emit('message', format.message(this.state, message.data.post));
+            !message.subtype && emitter.emit('message', format.message(state, message.data.post));
         }
     }
 
@@ -39,24 +40,24 @@ function MattermostBot() {
             .then((me) => {
                 console.log(`LOGIN SUCCESS AS ${me.email}`);
                 console.log(JSON.stringify(me));
-                this.state.self = { id: me.id, name: me.username };
-                this.state.token = web.getToken();
+                state.self = { id: me.id, name: me.username };
+                state.token = web.getToken();
             })
             .then(()=>{
                 web.getProfiles(0,200).then(users=>{
                     //There are two pages of users...
                     web.getProfiles(1,200).then(more_users=>{
                         let all_users = users.concat(more_users);
-                        this.state.users = indexBy('id', all_users.map(format.user))
-                        this.state.users_by_username = indexBy('name',all_users.map(format.user))
+                        state.users = indexBy('id', all_users.map(format.user))
+                        state.users_by_username = indexBy('name',all_users.map(format.user))
                     });
                 });
             })
             .then(()=>{
                 wsClient.setEventCallback(onMessage);
                 wsClient.setErrorCallback(onError);
-                wsClient.initialize(this.state.token,{},{},{'connectionUrl':config_file.WEBSOCKET_URL});
-                emitter.emit('load', this.state)
+                wsClient.initialize(state.token,{},{},{'connectionUrl':config_file.WEBSOCKET_URL});
+                emitter.emit('load', state)
             })
             .catch((err)=>{
                 console.error(err);
@@ -70,7 +71,7 @@ function MattermostBot() {
     emitter.mentions = message =>
         (message.raw.message.match(/@[^\s]+/g) || [])
             .map(tag => tag.slice(1))
-            .map(id => this.state.users_by_username[id]);
+            .map(id => state.users_by_username[id]);
 
     emitter.isMentionned = (user, message) =>
         message.includes(`<@${user.id}>`) ||
@@ -79,7 +80,7 @@ function MattermostBot() {
     emitter.send = (message, text) =>
         web.createPost({'channel_id':message.raw.channel_id,'message':text})
             .then(res => (res.message.channel = res.channel_id, res.message))
-            .then(message => format.message(this.state, message))
+            .then(message => format.message(state, message))
 
     emitter.edit = (message, text) =>
         web.updatePost({'id':message.id,'message':text});
