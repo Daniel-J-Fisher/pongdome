@@ -74,4 +74,10 @@ api.emit('state', state => {
   }
 })
 
+document.addEventListener('keypress', (event) => {
+  const keyName = event.key;
+
+  alert('keypress event\n\n' + 'key: ' + keyName);
+});
+
 window.api = api
