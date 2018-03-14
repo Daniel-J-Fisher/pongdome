@@ -67,13 +67,12 @@ exports.run = function api (config) {
 
   function currentServing (firstServing, playerOne, playerTwo) {
     let total = playerOne.current + playerTwo.current
-    debug(playerOne);
-    debug(playerTwo);
 
     // Change every two points unless 10-10.
     if (total < 20) total = Math.floor(total / 2)
 
     const player = total % 2 === 0 ? (firstServing ? playerOne : playerTwo) : (firstServing ? playerTwo : playerOne);
+    player.other = total % 2 === 0 ? (firstServing ? playerTwo : playerOne) : (firstServing ? playerOne: playerTwo);
     debug(player);
     // Invert first serving every game.
     if (playerOne.games.length % 2 === 0) {
