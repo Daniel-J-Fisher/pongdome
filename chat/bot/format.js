@@ -1,6 +1,6 @@
 exports.user = user => ({
     raw: user,
-    id: user.user_id,
+    id: user.id,
     name: user.username,
     fullName: user.first_name +' '+ user.last_name,
     email: user.email,
