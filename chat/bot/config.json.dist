@@ -1,5 +1,5 @@
 {
-    "WEBSOCKET_URL": "",
+    "WEBSOCKET_URL": "localhost:4242",
     "HTTP_URL": "",
     "BOT_TOKEN": "",
     "BOT_ID":"",

@@ -73,7 +73,6 @@ exports.run = function api (config) {
 
     const player = total % 2 === 0 ? (firstServing ? playerOne : playerTwo) : (firstServing ? playerTwo : playerOne);
     player.other = total % 2 === 0 ? (firstServing ? playerTwo : playerOne) : (firstServing ? playerOne: playerTwo);
-    debug(player);
     // Invert first serving every game.
     if (playerOne.games.length % 2 === 0) {
       return player
