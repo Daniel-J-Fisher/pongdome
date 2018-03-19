@@ -56,8 +56,8 @@ exports.run = function api (config) {
       }
     }
 
-    match.playerOne.other = match.playerTwo
-    match.playerTwo.other = match.playerOne
+    match.playerOne.other = 'playerTwo';
+    match.playerTwo.other = 'playerOne';
 
     if (match.firstServing === true) match.firstServing = match.playerOne
     else if (match.firstServing === false) match.firstServing = match.playerTwo
@@ -72,12 +72,11 @@ exports.run = function api (config) {
     if (total < 20) total = Math.floor(total / 2)
 
     const player = total % 2 === 0 ? (firstServing ? playerOne : playerTwo) : (firstServing ? playerTwo : playerOne);
-    player.other = total % 2 === 0 ? (firstServing ? playerTwo : playerOne) : (firstServing ? playerOne: playerTwo);
     // Invert first serving every game.
     if (playerOne.games.length % 2 === 0) {
       return player
     } else {
-      return player.other
+      return player.other == 'playerOne' ? playerOne : playerTwo
     }
   }
 
@@ -151,6 +150,7 @@ exports.run = function api (config) {
     playerTwo.games.push(playerTwo.current)
 
     const winner = playerOne.current > playerTwo.current ? playerOne : playerTwo
+    winner.other = winner.other == 'playerOne' ? playerOne : playerTwo;
 
     playerOne.current = 0
     playerTwo.current = 0
@@ -175,7 +175,8 @@ exports.run = function api (config) {
     if (firstServing) {
       const player = currentServing(firstServing, playerOne, playerTwo)
       player.serving = true
-      player.other.serving = false
+      let otherPlayer = player.other == 'playerOne' ? playerOne : playerTwo;
+      otherPlayer.serving = false
     } else {
       playerOne.serving = false
       playerTwo.serving = false
@@ -196,13 +197,14 @@ exports.run = function api (config) {
   }
 
   function decrementPlayer (player) {
-    if (player.current === 0 && player.other.current === 0) {
+    let otherPlayer = player.other == 'playerOne' ? currentMatch.playerOne : currentMatch.playerTwo;
+    if (player.current === 0 && otherPlayer.current === 0) {
       if (player.games.length > 0) {
         // Only the player who won the last game can pop to the previous game at
         // this point otherwise the game will re-end immediatly.
-        if (player.games[player.games.length - 1] >= player.other.games[player.other.games.length - 1]) {
+        if (player.games[player.games.length - 1] >= otherPlayer.games[otherPlayer.games.length - 1]) {
           player.current = player.games.pop()
-          player.other.current = player.other.games.pop()
+          otherPlayer.current = otherPlayer.games.pop()
         }
       } else if (player === currentMatch.firstServing) {
         currentMatch.firstServing = null
