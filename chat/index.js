@@ -168,6 +168,10 @@ exports.run = function chat(config) {
       return bot.send(message,text);
     }
 
+    message.edit = (message,text)=>{
+      return bot.edit(message,text);
+    }
+
     if (!results.length) return
 
     const action = results[0][1].toLowerCase()
