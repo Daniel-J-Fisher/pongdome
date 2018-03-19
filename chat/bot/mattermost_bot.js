@@ -27,7 +27,7 @@ function MattermostBot() {
 
     const onMessage = message => {
         if(message.event && (message.event == 'posted')){
-            if(message.data.post.user_id != config_file.BOT_ID_FULL){
+            if(JSON.parse(message.data.post).user_id != config_file.BOT_ID_FULL){
                 !message.subtype && emitter.emit('message', format.message(state, message.data.post));
             }
         }
