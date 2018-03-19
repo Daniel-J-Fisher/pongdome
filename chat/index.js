@@ -185,7 +185,7 @@ exports.run = function chat(config) {
       .map(name => name.toLowerCase())
       .find(name => name === message.author.name.toLowerCase())
 
-    debug(`@${message.author.name}: #${action}${message.mentions().map(x => ` @${x.name}`).join('')}${flags.map(x => ` #${x}`).join('')} [${message.thread || 'dm'}]`)
+    debug(`@${message.author.name}: #${action}${message.mentions().map(x => x ? ` @${x.name}` : '').join('')}${flags.map(x => ` #${x}`).join('')} [${message.thread || 'dm'}]`)
 
     try {
       actions[action]({ api, bot, saveState, findRequest, addRequest, removeRequest, challenges, matchesById, matchesByThread, message, flags: flagsObject, isAdmin })
