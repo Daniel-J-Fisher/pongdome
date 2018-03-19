@@ -168,7 +168,7 @@ exports.run = function chat(config) {
       return bot.send(message,text);
     }
 
-    message.edit = (message,text)=>{
+    message.edit = (text)=>{
       return bot.edit(message,text);
     }
 
@@ -232,9 +232,10 @@ exports.run = function chat(config) {
     )
 
     const liveScore = '```\n' + table.toString() + '\n```'
-
+    debug(liveScore);
+    debug(request.progress);
     if (request.progress) {
-      request.progress = request.progress.then(message => message.edit(liveScore))
+      request.progress = request.message.edit(liveScore);
     } else {
       request.progress = request.message.send(liveScore)
     }
