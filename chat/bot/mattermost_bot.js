@@ -26,11 +26,8 @@ function MattermostBot() {
     const onError = err => emitter.emit('error', err);
 
     const onMessage = message => {
-        if(message.event && message.event == 'posted'){
-            let data_before_format = message.data.post;
-            let data_after_format = format.message(state, data_before_format);
-            if(data_after_format.author.name != config_file.BOT_USERNAME){
-                console.log(Object.keys(data_after_format));
+        if(message.event && (message.event == 'posted')){
+            if(message.data.post.user_id != config_file.BOT_ID_FULL){
                 !message.subtype && emitter.emit('message', format.message(state, message.data.post));
             }
         }
