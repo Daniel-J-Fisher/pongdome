@@ -76,8 +76,20 @@ api.emit('state', state => {
 
 document.addEventListener('keypress', (event) => {
   const keyName = event.key;
-
-  alert('keypress event\n\n' + 'key: ' + keyName);
+  switch(keyName){
+    case('w'):
+      api.emit('increment-player-one');
+      break;
+    case('s'):
+      api.emit('decrement-player-one');
+      break;
+    case('i'):
+      api.emit('increment-player-two');
+      break;
+    case('k'):
+      api.emit('decrement-player-two');
+      break;
+  }
 });
 
 window.api = api
